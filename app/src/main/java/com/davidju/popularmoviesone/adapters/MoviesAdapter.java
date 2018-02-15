@@ -3,6 +3,7 @@ package com.davidju.popularmoviesone.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.davidju.popularmoviesone.R;
 import com.davidju.popularmoviesone.activities.DetailsActivity;
 import com.davidju.popularmoviesone.models.Movie;
 
+/** Adapter for GridView that displays list of movies */
 public class MoviesAdapter extends ArrayAdapter<Movie> {
 
     public static final String baseUrl = "http://image.tmdb.org/t/p/w185/";
@@ -22,8 +24,8 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
         super(context, 0);
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @Override @NonNull @SuppressWarnings("ConstantConditions")
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         final Movie movie = getItem(position);
         ViewHolder viewHolder;
         if (convertView == null) {
@@ -37,8 +39,6 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
 
         GlideApp.with(getContext())
                 .load(Uri.parse(baseUrl + movie.getPosterPath()))
-                .override(getContext().getResources().getInteger(R.integer.poster_width),
-                        getContext().getResources().getInteger(R.integer.poster_height))
                 .fitCenter()
                 .into(viewHolder.poster);
         viewHolder.poster.setOnClickListener(new View.OnClickListener() {

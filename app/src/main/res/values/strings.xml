@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Popular Movies Stage 1</string>
+    <string name="app_name">Popular Movies</string>
 
     <string name="tmdb_api_key"></string>
 
@@ -8,6 +8,9 @@
     <string name="menu_sort_rating">Sort by Highest Rating</string>
 
     <string name="details_synopsis_title">Synopsis</string>
-    <string name="details_rating_title">Rating</string>
+    <string name="details_rating_title">Vote Average</string>
     <string name="detail_release_date_title">Release Date</string>
+
+    <string name="toast_no_network">The movie list could not be updated because you are not connected
+        to a network. Please connect to a network and try again.</string>
 </resources>

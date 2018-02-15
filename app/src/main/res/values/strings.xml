@@ -2,4 +2,8 @@
     <string name="app_name">Popular Movies Stage 1</string>
 
     <string name="tmdb_api_key"></string>
+
+    <string name="menu_sort">Sort</string>
+    <string name="menu_sort_popularity">Sort by Popularity</string>
+    <string name="menu_sort_rating">Sort by Highest Rating</string>
 </resources>

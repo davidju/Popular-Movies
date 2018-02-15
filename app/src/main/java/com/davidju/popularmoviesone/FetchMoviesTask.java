@@ -81,7 +81,7 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
             url += "top_rated";
         }
         Context context = contextReference.get();
-        url += "?api_key=" + context.getString(R.string.tmdb_api_key);
+        url += "?api_key=" + BuildConfig.TMDB_API_KEY;
 
         try {
             return new URL(url);

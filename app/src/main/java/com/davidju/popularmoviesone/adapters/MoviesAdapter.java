@@ -37,8 +37,6 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
 
         GlideApp.with(getContext())
                 .load(Uri.parse(baseUrl + movie.getPosterPath()))
-                .override(getContext().getResources().getInteger(R.integer.poster_width),
-                        getContext().getResources().getInteger(R.integer.poster_height))
                 .fitCenter()
                 .into(viewHolder.poster);
         viewHolder.poster.setOnClickListener(new View.OnClickListener() {

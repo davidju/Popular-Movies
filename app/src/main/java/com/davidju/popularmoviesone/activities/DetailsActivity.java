@@ -42,7 +42,7 @@ public class DetailsActivity extends Activity {
             window.setStatusBarColor(ContextCompat.getColor(this, android.R.color.black));
         }
 
-        Movie movie = (Movie) getIntent().getSerializableExtra("movie");
+        Movie movie = (Movie) getIntent().getParcelableExtra("movie");
 
         title.setText(movie.getTitle());
         GlideApp.with(DetailsActivity.this)

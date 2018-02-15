@@ -1,19 +1,21 @@
 package com.davidju.popularmoviesone.adapters;
 
-
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.davidju.popularmoviesone.R;
 import com.davidju.popularmoviesone.models.Movie;
 
 public class MoviesAdapter extends ArrayAdapter<Movie> {
 
-    private String baseUrl = "http://image.tmdb.org/t/p/w185";
+    private String baseUrl = "http://image.tmdb.org/t/p/w185/";
 
     public MoviesAdapter(Context context) {
         super(context, 0);
@@ -32,8 +34,9 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        //Glide.with(getContext()).load(Uri.parse(baseUrl + movie.getPosterPath())).into(viewHolder.poster);
-        System.out.println(movie.getTitle());
+        System.out.println(baseUrl + movie.getPosterPath());
+        Glide.with(getContext()).load(Uri.parse(baseUrl + movie.getPosterPath())).into(viewHolder.poster);
+
         return convertView;
     }
 

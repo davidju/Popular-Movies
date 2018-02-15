@@ -16,13 +16,23 @@ import com.davidju.popularmoviesone.R;
 import com.davidju.popularmoviesone.adapters.MoviesAdapter;
 import com.davidju.popularmoviesone.models.Movie;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /** Activity that controls view for movie details */
 public class DetailsActivity extends Activity {
+
+    @BindView(R.id.title) TextView title;
+    @BindView(R.id.poster) ImageView poster;
+    @BindView(R.id.synopsis_content) TextView synopsis;
+    @BindView(R.id.rating_content) TextView rating;
+    @BindView(R.id.release_date_content) TextView releaseDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        ButterKnife.bind(this);
 
         // Set status bar color to black
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -34,22 +44,13 @@ public class DetailsActivity extends Activity {
 
         Movie movie = (Movie) getIntent().getSerializableExtra("movie");
 
-        TextView title = findViewById(R.id.title);
         title.setText(movie.getTitle());
-
-        ImageView poster = findViewById(R.id.poster);
         GlideApp.with(DetailsActivity.this)
                 .load(Uri.parse(MoviesAdapter.baseUrl + movie.getPosterPath()))
                 .fitCenter()
                 .into(poster);
-
-        TextView synopsis = findViewById(R.id.synopsis_content);
         synopsis.setText(movie.getSynopsis());
-
-        TextView rating = findViewById(R.id.rating_content);
         rating.setText(movie.getRating());
-
-        TextView releaseDate = findViewById(R.id.release_date_content);
         releaseDate.setText(movie.getReleaseDate());
     }
 }

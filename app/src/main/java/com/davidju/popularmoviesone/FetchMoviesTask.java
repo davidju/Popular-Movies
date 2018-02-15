@@ -121,11 +121,10 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
             e.printStackTrace();
         }
 
-        MainActivityFragment.moviesAdapter.clear();
-        MainActivityFragment.moviesAdapter.addAll(movies);
+        MainActivityFragment.moviesAdapter.updateMovieList(movies);
         MainActivityFragment.moviesAdapter.notifyDataSetChanged();
 
-        MainActivityFragment.gridView.smoothScrollToPosition(0);
+        MainActivityFragment.recyclerView.smoothScrollToPosition(0);
     }
 
     /* Check if device currently has network has network access */

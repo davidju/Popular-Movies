@@ -15,6 +15,7 @@ import com.davidju.popularmoviesone.R;
 import com.davidju.popularmoviesone.activities.DetailsActivity;
 import com.davidju.popularmoviesone.models.Movie;
 
+/** Adapter for GridView that displays list of movies */
 public class MoviesAdapter extends ArrayAdapter<Movie> {
 
     public static final String baseUrl = "http://image.tmdb.org/t/p/w185/";

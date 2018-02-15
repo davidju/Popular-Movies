@@ -1,11 +1,9 @@
 package com.davidju.popularmoviesone;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.davidju.popularmoviesone.enums.SortType;
@@ -27,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/** AsyncTask that fetches movies from TMDB based on specified search criteria */
 public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
     private final WeakReference<Context> contextReference;
 
@@ -65,7 +64,6 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
                 e.printStackTrace();
             }
         }
-
         return null;
     }
 
@@ -74,6 +72,7 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
         processJson(json);
     }
 
+    /* Create URL for HTTP request */
     private URL buildUrl(SortType sortType) {
         String url = "http://api.themoviedb.org/3/movie/";
         if (sortType == SortType.POPULAR) {
@@ -92,6 +91,7 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
         return null;
     }
 
+    /* Parse JSON results */
     private void processJson(String json) {
         final String KEY_RESULTS = "results";
         final String KEY_TITLE = "original_title";
@@ -100,9 +100,7 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
         final String KEY_RATING = "vote_average";
         final String KEY_RELEASE_DATE = "release_date";
 
-
         List<Movie> movies = new ArrayList<>();
-
         try {
             JSONObject results = new JSONObject(json);
             JSONArray moviesArr = results.getJSONArray(KEY_RESULTS);
@@ -130,6 +128,7 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
         MainActivityFragment.gridView.smoothScrollToPosition(0);
     }
 
+    /* Check if device currently has network has network access */
     private boolean isNetworkAvailable() {
         Context context = contextReference.get();
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -137,7 +136,6 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             return networkInfo != null && networkInfo.isConnectedOrConnecting();
         }
-
         return false;
     }
 }

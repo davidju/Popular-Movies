@@ -13,7 +13,7 @@ import com.davidju.popularmoviesone.R;
 import com.davidju.popularmoviesone.adapters.MoviesAdapter;
 import com.davidju.popularmoviesone.enums.SortType;
 
-
+/** Fragment that controls main view that displays grid of popular movies */
 public class MainActivityFragment extends Fragment {
 
     public static GridView gridView;

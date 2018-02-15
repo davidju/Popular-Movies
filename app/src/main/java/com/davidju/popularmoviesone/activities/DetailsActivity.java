@@ -16,6 +16,7 @@ import com.davidju.popularmoviesone.R;
 import com.davidju.popularmoviesone.adapters.MoviesAdapter;
 import com.davidju.popularmoviesone.models.Movie;
 
+/** Activity that controls view for movie details */
 public class DetailsActivity extends Activity {
 
     @Override
@@ -23,6 +24,7 @@ public class DetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+        // Set status bar color to black
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

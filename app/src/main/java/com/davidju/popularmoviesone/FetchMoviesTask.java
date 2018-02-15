@@ -1,9 +1,11 @@
 package com.davidju.popularmoviesone;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.davidju.popularmoviesone.enums.SortType;
@@ -18,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,17 +28,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
-    private Context context;
+    private final WeakReference<Context> contextReference;
 
     public FetchMoviesTask(Context context) {
-        this.context = context;
+        contextReference = new WeakReference<>(context);
         if (!isNetworkAvailable()) {
             cancel(true);
             Toast.makeText(context, context.getString(R.string.toast_no_network), Toast.LENGTH_LONG).show();
         }
     }
 
-    @Override
+    @Override @SuppressWarnings("ConstantConditions")
     protected String doInBackground(SortType... params) {
         if (!isCancelled()) {
             try {
@@ -47,10 +50,11 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
                 InputStream inputStream = connection.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line + "\n");
+                    buffer.append(line);
+                    buffer.append("\n");
                 }
 
                 inputStream.close();
@@ -77,6 +81,7 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
         } else if (sortType == SortType.TOP_RATED) {
             url += "top_rated";
         }
+        Context context = contextReference.get();
         url += "?api_key=" + context.getString(R.string.tmdb_api_key);
 
         try {
@@ -125,9 +130,14 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
         MainActivityFragment.gridView.smoothScrollToPosition(0);
     }
 
-    public boolean isNetworkAvailable() {
+    private boolean isNetworkAvailable() {
+        Context context = contextReference.get();
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+        if (cm != null) {
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            return networkInfo != null && networkInfo.isConnectedOrConnecting();
+        }
+
+        return false;
     }
 }

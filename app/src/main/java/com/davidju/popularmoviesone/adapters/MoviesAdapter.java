@@ -3,6 +3,7 @@ package com.davidju.popularmoviesone.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,8 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
         super(context, 0);
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @Override @NonNull @SuppressWarnings("ConstantConditions")
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         final Movie movie = getItem(position);
         ViewHolder viewHolder;
         if (convertView == null) {

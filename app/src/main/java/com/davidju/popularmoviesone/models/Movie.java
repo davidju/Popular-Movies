@@ -1,7 +1,9 @@
 package com.davidju.popularmoviesone.models;
 
 
-public class Movie {
+import java.io.Serializable;
+
+public class Movie implements Serializable {
 
     private String title;
     private String posterPath;

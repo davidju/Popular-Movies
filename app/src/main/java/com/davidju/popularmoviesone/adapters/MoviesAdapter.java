@@ -1,6 +1,7 @@
 package com.davidju.popularmoviesone.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +11,12 @@ import android.widget.ImageView;
 
 import com.davidju.popularmoviesone.GlideApp;
 import com.davidju.popularmoviesone.R;
+import com.davidju.popularmoviesone.activities.DetailsActivity;
 import com.davidju.popularmoviesone.models.Movie;
 
 public class MoviesAdapter extends ArrayAdapter<Movie> {
 
-    private final String baseUrl = "http://image.tmdb.org/t/p/w185/";
+    public static final String baseUrl = "http://image.tmdb.org/t/p/w185/";
 
     public MoviesAdapter(Context context) {
         super(context, 0);
@@ -22,7 +24,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Movie movie = getItem(position);
+        final Movie movie = getItem(position);
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -39,6 +41,14 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
                         getContext().getResources().getInteger(R.integer.poster_height))
                 .fitCenter()
                 .into(viewHolder.poster);
+        viewHolder.poster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DetailsActivity.class);
+                intent.putExtra("movie", movie);
+                getContext().startActivity(intent);
+            }
+        });
 
         return convertView;
     }

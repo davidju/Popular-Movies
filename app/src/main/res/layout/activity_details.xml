@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/details_vertical_padding"
+        android:paddingBottom="@dimen/details_vertical_padding"
+        android:paddingStart="@dimen/details_horizontal_padding"
+        android:paddingEnd="@dimen/details_horizontal_padding">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/details_title_vertical_margin" />
+        
+        <ImageView
+            android:id="@+id/poster"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/details_title_vertical_margin" />
+
+        <TextView
+            android:id="@+id/synopsis_title"
+            style="@style/details_title_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/details_synopsis_title" />
+
+        <TextView
+            android:id="@+id/synopsis_content"
+            style="@style/details_content_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/rating_title"
+            style="@style/details_title_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/details_rating_title"/>
+
+        <TextView
+            android:id="@+id/rating_content"
+            style="@style/details_content_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/release_title"
+            style="@style/details_title_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_release_date_title"/>
+
+        <TextView
+            android:id="@+id/release_date_content"
+            style="@style/details_content_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</ScrollView>

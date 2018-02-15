@@ -5,4 +5,5 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:numColumns="3"
+    android:background="@android:color/black"
     tools:context="com.davidju.popularmoviesone.activities.MainActivity" />

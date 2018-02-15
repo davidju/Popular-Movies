@@ -7,15 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.davidju.popularmoviesone.GlideApp;
 import com.davidju.popularmoviesone.R;
 import com.davidju.popularmoviesone.models.Movie;
 
 public class MoviesAdapter extends ArrayAdapter<Movie> {
 
-    private String baseUrl = "http://image.tmdb.org/t/p/w185/";
+    private final String baseUrl = "http://image.tmdb.org/t/p/w185/";
 
     public MoviesAdapter(Context context) {
         super(context, 0);
@@ -34,8 +33,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        System.out.println(baseUrl + movie.getPosterPath());
-        Glide.with(getContext()).load(Uri.parse(baseUrl + movie.getPosterPath())).into(viewHolder.poster);
+        GlideApp.with(getContext()).load(Uri.parse(baseUrl + movie.getPosterPath())).fitCenter().into(viewHolder.poster);
 
         return convertView;
     }

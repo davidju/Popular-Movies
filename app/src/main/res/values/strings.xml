@@ -10,4 +10,7 @@
     <string name="details_synopsis_title">Synopsis</string>
     <string name="details_rating_title">Rating</string>
     <string name="detail_release_date_title">Release Date</string>
+
+    <string name="toast_no_network">The movie list could not be updated because you are not connected
+        to a network. Please connect to a network and try again.</string>
 </resources>

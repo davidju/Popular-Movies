@@ -1,7 +1,10 @@
 package com.davidju.popularmoviesone;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.davidju.popularmoviesone.enums.SortType;
 import com.davidju.popularmoviesone.fragments.MainActivityFragment;
@@ -23,32 +26,40 @@ import java.util.List;
 
 public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
     private Context context;
+
     public FetchMoviesTask(Context context) {
         this.context = context;
+        if (!isNetworkAvailable()) {
+            cancel(true);
+            Toast.makeText(context, context.getString(R.string.toast_no_network), Toast.LENGTH_LONG).show();
+        }
     }
+
     @Override
     protected String doInBackground(SortType... params) {
-        try {
-            URL url = buildUrl(params[0]);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
+        if (!isCancelled()) {
+            try {
+                URL url = buildUrl(params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.connect();
 
-            InputStream inputStream = connection.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                InputStream inputStream = connection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-            StringBuffer buffer = new StringBuffer();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line + "\n");
+                StringBuffer buffer = new StringBuffer();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line + "\n");
+                }
+
+                inputStream.close();
+                reader.close();
+
+                return buffer.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            inputStream.close();
-            reader.close();
-
-            return buffer.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         return null;
@@ -112,5 +123,11 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
         MainActivityFragment.moviesAdapter.notifyDataSetChanged();
 
         MainActivityFragment.gridView.smoothScrollToPosition(0);
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 }

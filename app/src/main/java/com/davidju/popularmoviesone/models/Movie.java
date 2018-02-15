@@ -28,4 +28,24 @@ public class Movie {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public String getSynopsis() {
+        return synopsis;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
 }

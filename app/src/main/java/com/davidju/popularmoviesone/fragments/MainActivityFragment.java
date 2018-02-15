@@ -39,6 +39,7 @@ public class MainActivityFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         gridView = rootView.findViewById(R.id.grid_view);
+        moviesAdapter = new MoviesAdapter(getContext());
         gridView.setAdapter(moviesAdapter);
 
         new FetchMoviesTask().execute(SortType.POPULAR);
@@ -129,7 +130,8 @@ public class MainActivityFragment extends Fragment {
             e.printStackTrace();
         }
 
-        moviesAdapter = new MoviesAdapter(getContext(), movies);
+        moviesAdapter.clear();
+        moviesAdapter.addAll(movies);
         moviesAdapter.notifyDataSetChanged();
     }
 }

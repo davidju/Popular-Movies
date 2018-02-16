@@ -81,7 +81,7 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
             url += "top_rated";
         }
         Context context = contextReference.get();
-        url += "?api_key=" + context.getString(R.string.tmdb_api_key);
+        url += "?api_key=" + BuildConfig.TMDB_API_KEY;
 
         try {
             return new URL(url);
@@ -121,11 +121,10 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
             e.printStackTrace();
         }
 
-        MainActivityFragment.moviesAdapter.clear();
-        MainActivityFragment.moviesAdapter.addAll(movies);
+        MainActivityFragment.moviesAdapter.updateMovieList(movies);
         MainActivityFragment.moviesAdapter.notifyDataSetChanged();
 
-        MainActivityFragment.gridView.smoothScrollToPosition(0);
+        MainActivityFragment.recyclerView.smoothScrollToPosition(0);
     }
 
     /* Check if device currently has network has network access */

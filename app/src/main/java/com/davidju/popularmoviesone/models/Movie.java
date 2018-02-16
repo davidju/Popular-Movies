@@ -1,15 +1,51 @@
 package com.davidju.popularmoviesone.models;
 
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Movie implements Serializable {
+public class Movie implements Parcelable {
 
     private String title;
     private String posterPath;
     private String synopsis;
     private String rating;
     private String releaseDate;
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(posterPath);
+        dest.writeString(synopsis);
+        dest.writeString(rating);
+        dest.writeString(releaseDate);
+    }
+
+    public Movie() {}
+
+    private Movie(Parcel in) {
+        title = in.readString();
+        posterPath = in.readString();
+        synopsis = in.readString();
+        rating = in.readString();
+        releaseDate = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
     public void setTitle(String title) {
         this.title = title;

@@ -26,13 +26,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
-        
-        <activity android:name=".activities.TrailerActivity"
-            android:parentActivityName=".activities.DetailsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.DetailsActivity" />
-        </activity>
+
     </application>
 
 </manifest>

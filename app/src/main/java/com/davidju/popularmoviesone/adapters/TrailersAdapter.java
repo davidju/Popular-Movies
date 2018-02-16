@@ -2,6 +2,7 @@ package com.davidju.popularmoviesone.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.davidju.popularmoviesone.R;
-import com.davidju.popularmoviesone.activities.TrailerActivity;
 
 import java.util.List;
 
@@ -39,8 +39,11 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
             @Override
             public void onClick(View v) {
                 Context context = viewHolder.trailerCount.getContext();
-                Intent intent = new Intent(context, TrailerActivity.class);
-                intent.putExtra(TrailerActivity.TRAILER_KEY, trailers.get(position));
+                String url = "http://youtube.com/watch?v=" + trailers.get(position);
+                // Alternative is to use YoutubePlayerApi from Google, but that requires registering
+                // this application to obtain a key. For now, launch and play trailer using the
+                // following intent.
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 context.startActivity(intent);
             }
         });

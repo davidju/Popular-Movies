@@ -80,8 +80,7 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
         } else if (sortType == SortType.TOP_RATED) {
             url += "top_rated";
         }
-        Context context = contextReference.get();
-        url += "?api_key=" + BuildConfig.TMDB_API_KEY;
+        url += "?api_key=" + BuildConfig.TMDB_API_KEY + "&apprend_to_response=videos";
 
         try {
             return new URL(url);
@@ -94,6 +93,7 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
     /* Parse JSON results */
     private void processJson(String json) {
         final String KEY_RESULTS = "results";
+        final String KEY_ID = "id";
         final String KEY_TITLE = "original_title";
         final String KEY_POSTER_PATH = "poster_path";
         final String KEY_OVERVIEW = "overview";
@@ -109,6 +109,7 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
                 JSONObject info = moviesArr.getJSONObject(i);
                 Movie movie = new Movie();
 
+                movie.setId(info.optString(KEY_ID));
                 movie.setTitle(info.optString(KEY_TITLE));
                 movie.setPosterPath(info.optString(KEY_POSTER_PATH));
                 movie.setSynopsis(info.optString(KEY_OVERVIEW));

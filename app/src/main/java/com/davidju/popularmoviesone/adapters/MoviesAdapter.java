@@ -51,13 +51,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                 .load(Uri.parse(baseUrl + movie.getPosterPath()))
                 .fitCenter()
                 .into(viewHolder.poster);
-        viewHolder.poster.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra("movie", movie);
-                context.startActivity(intent);
-            }
+        viewHolder.poster.setOnClickListener(view -> {
+            Intent intent = new Intent(context, DetailsActivity.class);
+            intent.putExtra("movie", movie);
+            context.startActivity(intent);
         });
     }
 

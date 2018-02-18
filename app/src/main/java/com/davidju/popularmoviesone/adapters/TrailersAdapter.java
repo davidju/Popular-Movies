@@ -34,18 +34,15 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
 
     @Override
     public void onBindViewHolder(final TrailerViewHolder viewHolder, final int position) {
-        viewHolder.trailerCount.setText(String.valueOf(position + 1));
-        viewHolder.trailerCount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context = viewHolder.trailerCount.getContext();
-                String url = "http://youtube.com/watch?v=" + trailers.get(position);
-                // Alternative is to use YoutubePlayerApi from Google, but that requires registering
-                // this application to obtain a key. For now, launch and play trailer using the
-                // following intent.
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                context.startActivity(intent);
-            }
+        viewHolder.trailerCount.setText(String.valueOf(viewHolder.getAdapterPosition() + 1));
+        viewHolder.trailerCount.setOnClickListener(view -> {
+            Context context = viewHolder.trailerCount.getContext();
+            String url = "http://youtube.com/watch?v=" + trailers.get(viewHolder.getAdapterPosition());
+            // Alternative is to use YoutubePlayerApi from Google, but that requires registering
+            // this application to obtain a key. For now, launch and play trailer using the
+            // following intent.
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            context.startActivity(intent);
         });
     }
 

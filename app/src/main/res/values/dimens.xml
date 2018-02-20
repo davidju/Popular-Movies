@@ -7,4 +7,5 @@
     <dimen name="details_title_text_size">18sp</dimen>
     <dimen name="details_content_text_size">12sp</dimen>
     <dimen name="details_trailer_count_text_size">16sp</dimen>
+    <dimen name="details_trailer_item_vertical_margin">10dp</dimen>
 </resources>

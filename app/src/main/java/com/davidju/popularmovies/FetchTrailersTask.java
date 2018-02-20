@@ -3,6 +3,7 @@ package com.davidju.popularmovies;
 import android.os.AsyncTask;
 
 import com.davidju.popularmovies.interfaces.AsyncResponse;
+import com.davidju.popularmovies.models.Trailer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,15 +68,18 @@ public class FetchTrailersTask extends AsyncTask<String, Void, String> {
 
     private void processJson(String json) {
         final String KEY_RESULTS = "results";
+        final String KEY_NAME = "name";
         final String KEY_KEY = "key";
 
-        List<String> trailers = new ArrayList<>();
+        List<Trailer> trailers = new ArrayList<>();
         try {
             JSONObject results = new JSONObject(json);
             JSONArray trailersArr = results.getJSONArray(KEY_RESULTS);
             for (int i = 0; i < trailersArr.length(); i++) {
                 JSONObject info = trailersArr.getJSONObject(i);
-                trailers.add(info.optString(KEY_KEY));
+                String name = info.optString(KEY_NAME);
+                String key = info.optString(KEY_KEY);
+                trailers.add(new Trailer(name, key));
             }
         } catch (JSONException e) {
             e.printStackTrace();

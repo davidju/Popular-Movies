@@ -1,25 +1,27 @@
-package com.davidju.popularmoviesone.activities;
+package com.davidju.popularmovies.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.davidju.popularmoviesone.FetchTrailersTask;
-import com.davidju.popularmoviesone.GlideApp;
-import com.davidju.popularmoviesone.R;
-import com.davidju.popularmoviesone.adapters.MoviesAdapter;
-import com.davidju.popularmoviesone.adapters.TrailersAdapter;
-import com.davidju.popularmoviesone.interfaces.AsyncResponse;
-import com.davidju.popularmoviesone.models.Movie;
+import com.davidju.popularmovies.FetchTrailersTask;
+import com.davidju.popularmovies.GlideApp;
+import com.davidju.popularmovies.R;
+import com.davidju.popularmovies.adapters.MoviesAdapter;
+import com.davidju.popularmovies.interfaces.AsyncResponse;
+import com.davidju.popularmovies.models.Movie;
+import com.davidju.popularmovies.models.Trailer;
 
 import java.util.List;
 
@@ -27,14 +29,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /** Activity that controls view for movie details */
-public class DetailsActivity extends Activity implements AsyncResponse{
+public class DetailsActivity extends Activity implements AsyncResponse {
 
     @BindView(R.id.title) TextView title;
     @BindView(R.id.poster) ImageView poster;
     @BindView(R.id.synopsis_content) TextView synopsis;
     @BindView(R.id.rating_content) TextView rating;
     @BindView(R.id.release_date_content) TextView releaseDate;
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.trailers) LinearLayout trailers;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,10 +69,18 @@ public class DetailsActivity extends Activity implements AsyncResponse{
     }
 
     @Override
-    public void processFinish(List<String> results) {
-        recyclerView.setLayoutManager(new GridLayoutManager(DetailsActivity.this, 3));
-        TrailersAdapter adapter = new TrailersAdapter();
-        adapter.updateTrailers(results);
-        recyclerView.setAdapter(adapter);
+    public void processFinish(List<Trailer> results) {
+        for (Trailer trailer : results) {
+            ConstraintLayout item = (ConstraintLayout) getLayoutInflater().inflate(R.layout.item_trailer, trailers, false);
+            TextView name = item.findViewById(R.id.trailer_name);
+            name.setText(trailer.getName());
+            TextView play = item.findViewById(R.id.trailer_play);
+            play.setOnClickListener(view -> {
+                String link = "https://www.youtube.com/watch?v=" + trailer.getKey();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                startActivity(intent);
+            });
+            trailers.addView(item);
+        }
     }
 }

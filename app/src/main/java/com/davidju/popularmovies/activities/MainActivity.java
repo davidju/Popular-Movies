@@ -1,4 +1,4 @@
-package com.davidju.popularmoviesone.activities;
+package com.davidju.popularmovies.activities;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -11,9 +11,9 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.davidju.popularmoviesone.FetchMoviesTask;
-import com.davidju.popularmoviesone.R;
-import com.davidju.popularmoviesone.enums.SortType;
+import com.davidju.popularmovies.FetchMoviesTask;
+import com.davidju.popularmovies.R;
+import com.davidju.popularmovies.enums.SortType;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.davidju.popularmoviesone;
+package com.davidju.popularmovies;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,4 +1,4 @@
-package com.davidju.popularmoviesone.models;
+package com.davidju.popularmovies.models;
 
 
 import android.os.Parcel;

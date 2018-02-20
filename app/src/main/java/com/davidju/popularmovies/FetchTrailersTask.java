@@ -1,8 +1,8 @@
-package com.davidju.popularmoviesone;
+package com.davidju.popularmovies;
 
 import android.os.AsyncTask;
 
-import com.davidju.popularmoviesone.interfaces.AsyncResponse;
+import com.davidju.popularmovies.interfaces.AsyncResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;

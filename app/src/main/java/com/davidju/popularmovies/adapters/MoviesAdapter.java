@@ -1,4 +1,4 @@
-package com.davidju.popularmoviesone.adapters;
+package com.davidju.popularmovies.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.davidju.popularmoviesone.GlideApp;
-import com.davidju.popularmoviesone.R;
-import com.davidju.popularmoviesone.activities.DetailsActivity;
-import com.davidju.popularmoviesone.models.Movie;
+import com.davidju.popularmovies.GlideApp;
+import com.davidju.popularmovies.R;
+import com.davidju.popularmovies.activities.DetailsActivity;
+import com.davidju.popularmovies.models.Movie;
 
 import java.util.ArrayList;
 import java.util.List;

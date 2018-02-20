@@ -1,4 +1,4 @@
-package com.davidju.popularmoviesone.interfaces;
+package com.davidju.popularmovies.interfaces;
 
 import java.util.List;
 

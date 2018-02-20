@@ -1,4 +1,4 @@
-package com.davidju.popularmoviesone;
+package com.davidju.popularmovies;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -6,9 +6,9 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.davidju.popularmoviesone.enums.SortType;
-import com.davidju.popularmoviesone.fragments.MainActivityFragment;
-import com.davidju.popularmoviesone.models.Movie;
+import com.davidju.popularmovies.enums.SortType;
+import com.davidju.popularmovies.fragments.MainActivityFragment;
+import com.davidju.popularmovies.models.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;

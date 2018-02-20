@@ -1,4 +1,4 @@
-package com.davidju.popularmoviesone.adapters;
+package com.davidju.popularmovies.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.davidju.popularmoviesone.R;
+import com.davidju.popularmovies.R;
 
 import java.util.List;
 

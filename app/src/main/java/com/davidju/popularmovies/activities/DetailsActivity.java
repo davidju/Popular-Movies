@@ -1,4 +1,4 @@
-package com.davidju.popularmoviesone.activities;
+package com.davidju.popularmovies.activities;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -13,13 +13,13 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.davidju.popularmoviesone.FetchTrailersTask;
-import com.davidju.popularmoviesone.GlideApp;
-import com.davidju.popularmoviesone.R;
-import com.davidju.popularmoviesone.adapters.MoviesAdapter;
-import com.davidju.popularmoviesone.adapters.TrailersAdapter;
-import com.davidju.popularmoviesone.interfaces.AsyncResponse;
-import com.davidju.popularmoviesone.models.Movie;
+import com.davidju.popularmovies.FetchTrailersTask;
+import com.davidju.popularmovies.GlideApp;
+import com.davidju.popularmovies.R;
+import com.davidju.popularmovies.adapters.MoviesAdapter;
+import com.davidju.popularmovies.adapters.TrailersAdapter;
+import com.davidju.popularmovies.interfaces.AsyncResponse;
+import com.davidju.popularmovies.models.Movie;
 
 import java.util.List;
 
@@ -71,6 +71,8 @@ public class DetailsActivity extends Activity implements AsyncResponse{
         recyclerView.setLayoutManager(new GridLayoutManager(DetailsActivity.this, 3));
         TrailersAdapter adapter = new TrailersAdapter();
         adapter.updateTrailers(results);
+        System.out.println(results.size());
         recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(false);
     }
 }

@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.davidju.popularmovies.FetchMoviesTask;
+import com.davidju.popularmovies.asynctasks.FetchMoviesTask;
 import com.davidju.popularmovies.R;
 import com.davidju.popularmovies.adapters.MoviesAdapter;
 import com.davidju.popularmovies.enums.SortType;

@@ -26,6 +26,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.davidju.popularmovies.activities.MainActivity" />
         </activity>
+        
+        <provider
+            android:authorities="com.davidju.popularmovies.app"
+            android:name=".database.FavoritesProvider"
+            android:exported="false"
+            android:syncable="true" />
 
     </application>
 

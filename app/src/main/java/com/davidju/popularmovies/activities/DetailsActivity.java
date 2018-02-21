@@ -8,19 +8,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.davidju.popularmovies.FetchTrailersTask;
+import com.davidju.popularmovies.asynctasks.FetchReviewsTask;
+import com.davidju.popularmovies.asynctasks.FetchTrailersTask;
 import com.davidju.popularmovies.GlideApp;
 import com.davidju.popularmovies.R;
 import com.davidju.popularmovies.adapters.MoviesAdapter;
 import com.davidju.popularmovies.interfaces.AsyncResponse;
 import com.davidju.popularmovies.models.Movie;
+import com.davidju.popularmovies.models.Review;
 import com.davidju.popularmovies.models.Trailer;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class DetailsActivity extends Activity implements AsyncResponse {
     @BindView(R.id.rating_content) TextView rating;
     @BindView(R.id.release_date_content) TextView releaseDate;
     @BindView(R.id.trailers) LinearLayout trailers;
+    @BindView(R.id.reviews) LinearLayout reviews;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,10 +68,14 @@ public class DetailsActivity extends Activity implements AsyncResponse {
         FetchTrailersTask trailersTask = new FetchTrailersTask();
         trailersTask.response = this;
         trailersTask.execute(movie.getId());
+
+        FetchReviewsTask reviewsTask = new FetchReviewsTask();
+        reviewsTask.response = this;
+        reviewsTask.execute(movie.getId());
     }
 
     @Override
-    public void processFinish(List<Trailer> results) {
+    public void processTrailerResults(List<Trailer> results) {
         for (Trailer trailer : results) {
             ConstraintLayout item = (ConstraintLayout) getLayoutInflater().inflate(R.layout.item_trailer, trailers, false);
             TextView name = item.findViewById(R.id.trailer_name);
@@ -81,6 +87,16 @@ public class DetailsActivity extends Activity implements AsyncResponse {
                 startActivity(intent);
             });
             trailers.addView(item);
+        }
+    }
+
+    @Override
+    public void processReviewResults(List<Review> results) {
+        for (Review review : results) {
+            TextView item = new TextView(DetailsActivity.this);
+            item.setText(review.getContent());
+            item.setTextColor(ContextCompat.getColor(getApplicationContext(), android.R.color.white));
+            reviews.addView(item);
         }
     }
 }

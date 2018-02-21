@@ -1,8 +1,10 @@
-package com.davidju.popularmovies;
+package com.davidju.popularmovies.asynctasks;
 
 import android.os.AsyncTask;
 
+import com.davidju.popularmovies.BuildConfig;
 import com.davidju.popularmovies.interfaces.AsyncResponse;
+import com.davidju.popularmovies.models.Review;
 import com.davidju.popularmovies.models.Trailer;
 
 import org.json.JSONArray;
@@ -19,8 +21,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FetchTrailersTask extends AsyncTask<String, Void, String> {
+public class FetchReviewsTask extends AsyncTask<String, Void, String> {
     public AsyncResponse response = null;
+
     @Override
     protected String doInBackground(String... params) {
         URL url = buildUrl(params[0]);
@@ -56,7 +59,7 @@ public class FetchTrailersTask extends AsyncTask<String, Void, String> {
 
     private URL buildUrl(String movieId) {
         String url = "https://api.themoviedb.org/3/movie/";
-        url += movieId + "/videos?api_key=" + BuildConfig.TMDB_API_KEY;
+        url += movieId + "/reviews?api_key=" + BuildConfig.TMDB_API_KEY;
 
         try {
             return new URL(url);
@@ -68,22 +71,22 @@ public class FetchTrailersTask extends AsyncTask<String, Void, String> {
 
     private void processJson(String json) {
         final String KEY_RESULTS = "results";
-        final String KEY_NAME = "name";
-        final String KEY_KEY = "key";
+        final String KEY_AUTHOR = "author";
+        final String KEY_CONTENT = "content";
 
-        List<Trailer> trailers = new ArrayList<>();
+        List<Review> reviews = new ArrayList<>();
         try {
             JSONObject results = new JSONObject(json);
-            JSONArray trailersArr = results.getJSONArray(KEY_RESULTS);
-            for (int i = 0; i < trailersArr.length(); i++) {
-                JSONObject info = trailersArr.getJSONObject(i);
-                String name = info.optString(KEY_NAME);
-                String key = info.optString(KEY_KEY);
-                trailers.add(new Trailer(name, key));
+            JSONArray reviewsArr = results.getJSONArray(KEY_RESULTS);
+            for (int i = 0; i < reviewsArr.length(); i++) {
+                JSONObject info = reviewsArr.getJSONObject(i);
+                String author = info.optString(KEY_AUTHOR);
+                String content = info.optString(KEY_CONTENT);
+                reviews.add(new Review(author, content));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        response.processFinish(trailers);
+        response.processReviewResults(reviews);
     }
 }

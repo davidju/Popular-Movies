@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.davidju.popularmovies.FetchMoviesTask;
+import com.davidju.popularmovies.asynctasks.FetchMoviesTask;
 import com.davidju.popularmovies.R;
 import com.davidju.popularmovies.enums.SortType;
 

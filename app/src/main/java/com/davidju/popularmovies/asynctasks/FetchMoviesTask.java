@@ -1,4 +1,4 @@
-package com.davidju.popularmovies;
+package com.davidju.popularmovies.asynctasks;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -6,6 +6,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.davidju.popularmovies.BuildConfig;
+import com.davidju.popularmovies.R;
 import com.davidju.popularmovies.enums.SortType;
 import com.davidju.popularmovies.fragments.MainActivityFragment;
 import com.davidju.popularmovies.models.Movie;

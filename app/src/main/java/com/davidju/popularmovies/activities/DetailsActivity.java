@@ -99,28 +99,40 @@ public class DetailsActivity extends Activity implements AsyncResponse {
 
     @Override
     public void processTrailerResults(List<Trailer> results) {
-        for (Trailer trailer : results) {
-            ConstraintLayout item = (ConstraintLayout) getLayoutInflater().inflate(R.layout.item_trailer, trailers, false);
-            TextView name = item.findViewById(R.id.trailer_name);
-            name.setText(trailer.getName());
-            ImageView play = item.findViewById(R.id.trailer_play);
-            play.setOnClickListener(view -> {
-                String link = "https://www.youtube.com/watch?v=" + trailer.getKey();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-                startActivity(intent);
-            });
+        if (!results.isEmpty()) {
+            for (Trailer trailer : results) {
+                View item = getLayoutInflater().inflate(R.layout.item_trailer, trailers, false);
+                TextView name = item.findViewById(R.id.trailer_name);
+                name.setText(trailer.getName());
+                ImageView play = item.findViewById(R.id.trailer_play);
+                play.setOnClickListener(view -> {
+                    String link = "https://www.youtube.com/watch?v=" + trailer.getKey();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    startActivity(intent);
+                });
+                trailers.addView(item);
+            }
+        } else {
+            TextView item = (TextView) getLayoutInflater().inflate(R.layout.item_error, trailers, false);
+            item.setText(getString(R.string.error_no_trailers));
             trailers.addView(item);
         }
     }
 
     @Override
     public void processReviewResults(List<Review> results) {
-        for (Review review : results) {
-            View item = getLayoutInflater().inflate(R.layout.item_review, reviews, false);
-            TextView content = item.findViewById(R.id.content);
-            TextView author = item.findViewById(R.id.author);
-            content.setText(review.getContent());
-            author.setText(getString(R.string.detail_reviews_author, review.getAuthor()));
+        if (!results.isEmpty()) {
+            for (Review review : results) {
+                View item = getLayoutInflater().inflate(R.layout.item_review, reviews, false);
+                TextView content = item.findViewById(R.id.content);
+                TextView author = item.findViewById(R.id.author);
+                content.setText(review.getContent());
+                author.setText(getString(R.string.detail_reviews_author, review.getAuthor()));
+                reviews.addView(item);
+            }
+        } else {
+            TextView item = (TextView) getLayoutInflater().inflate(R.layout.item_error, trailers, false);
+            item.setText(getString(R.string.error_no_reviews));
             reviews.addView(item);
         }
     }

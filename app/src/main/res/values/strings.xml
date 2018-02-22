@@ -15,6 +15,13 @@
     <string name="detail_reviews_title">Reviews</string>
     <string name="detail_reviews_author">Written By %1$s</string>
 
+    <string name="error_no_reviews">No Reviews</string>
+    <string name="error_no_trailers">No Trailers</string>
+    <string name="error_no_network_reviews">No network connection. Please connect to a network
+        to load reviews.</string>
+    <string name="error_no_network_trailers">No network connection. Please connect to a network
+        to load trailers.</string>
+
     <string name="toast_no_network">The movie list could not be updated because you are not connected
         to a network. Please connect to a network and try again.</string>
 </resources>

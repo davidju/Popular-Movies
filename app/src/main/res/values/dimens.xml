@@ -2,10 +2,10 @@
 <resources>
     <dimen name="details_vertical_padding">10dp</dimen>
     <dimen name="details_horizontal_padding">7dp</dimen>
-    <dimen name="details_title_vertical_margin">15dp</dimen>
-    <dimen name="details_content_vertical_margin">6dp</dimen>
+    <dimen name="details_title_vertical_margin">18dp</dimen>
+    <dimen name="details_content_vertical_margin">8dp</dimen>
     <dimen name="details_title_text_size">18sp</dimen>
-    <dimen name="details_content_text_size">12sp</dimen>
+    <dimen name="details_content_text_size">14sp</dimen>
     <dimen name="details_trailer_count_text_size">16sp</dimen>
     <dimen name="details_trailer_item_vertical_margin">10dp</dimen>
 </resources>

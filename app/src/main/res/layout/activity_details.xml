@@ -63,7 +63,7 @@
         <TextView
             android:id="@+id/synopsis_title"
             style="@style/details_title_theme"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/details_synopsis_title" />
 
@@ -76,7 +76,7 @@
         <TextView
             android:id="@+id/rating_title"
             style="@style/details_title_theme"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/details_rating_title"/>
 
@@ -89,7 +89,7 @@
         <TextView
             android:id="@+id/release_title"
             style="@style/details_title_theme"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/detail_release_date_title"/>
 
@@ -102,7 +102,7 @@
         <TextView
             android:id="@+id/trailers_title"
             style="@style/details_title_theme"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/detail_trailers_title" />
 
@@ -115,7 +115,7 @@
         <TextView
             android:id="@+id/reviews_title"
             style="@style/details_title_theme"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/detail_reviews_title" />
 

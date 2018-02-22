@@ -9,11 +9,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ import com.davidju.popularmovies.models.Movie;
 import com.davidju.popularmovies.models.Review;
 import com.davidju.popularmovies.models.Trailer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,6 +39,12 @@ import butterknife.ButterKnife;
 /** Activity that controls view for movie details */
 public class DetailsActivity extends Activity implements AsyncResponse {
 
+    private static final String KEY_SCROLL_X_POSITION = "scroll_x_position";
+    private static final String KEY_SCROLL_Y_POSITION = "scroll_y_position";
+    private static final String KEY_TRAILERS = "trailers";
+    private static final String KEY_REVIEWS = "reviews";
+
+    @BindView(R.id.scrollview) ScrollView scrollView;
     @BindView(R.id.title) TextView title;
     @BindView(R.id.poster) ImageView poster;
     @BindView(R.id.favorite_title) TextView favoriteTitle;
@@ -47,6 +56,9 @@ public class DetailsActivity extends Activity implements AsyncResponse {
     @BindView(R.id.reviews) LinearLayout reviews;
 
     private boolean isFavorite;
+    private boolean restoredState = false;
+    private ArrayList<Trailer> trailerList;
+    private ArrayList<Review> reviewList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,18 +99,50 @@ public class DetailsActivity extends Activity implements AsyncResponse {
                 toggleFavoriteButton(false);
             }
         });
+    }
 
-        FetchTrailersTask trailersTask = new FetchTrailersTask(this);
-        trailersTask.response = this;
-        trailersTask.execute(movie.getId());
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        FetchReviewsTask reviewsTask = new FetchReviewsTask(this);
-        reviewsTask.response = this;
-        reviewsTask.execute(movie.getId());
+        if (!restoredState) {
+            Movie movie = getIntent().getParcelableExtra("movie");
+
+            FetchTrailersTask trailersTask = new FetchTrailersTask(this);
+            trailersTask.response = this;
+            trailersTask.execute(movie.getId());
+
+            FetchReviewsTask reviewsTask = new FetchReviewsTask(this);
+            reviewsTask.response = this;
+            reviewsTask.execute(movie.getId());
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_SCROLL_X_POSITION, scrollView.getScrollX());
+        outState.putInt(KEY_SCROLL_Y_POSITION, scrollView.getScrollY());
+        outState.putParcelableArrayList(KEY_TRAILERS, trailerList);
+        outState.putParcelableArrayList(KEY_REVIEWS, reviewList);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState.containsKey(KEY_TRAILERS) && savedInstanceState.containsKey(KEY_REVIEWS)) {
+            processTrailerResults(savedInstanceState.getParcelableArrayList(KEY_TRAILERS));
+            processReviewResults(savedInstanceState.getParcelableArrayList(KEY_REVIEWS));
+            restoredState = true;
+        }
+        if (savedInstanceState.containsKey(KEY_SCROLL_X_POSITION) && savedInstanceState.containsKey(KEY_SCROLL_Y_POSITION)) {
+            scrollView.post(() -> scrollView.scrollTo(savedInstanceState.getInt(KEY_SCROLL_X_POSITION), savedInstanceState.getInt(KEY_SCROLL_Y_POSITION)));
+        }
     }
 
     @Override
     public void processTrailerResults(List<Trailer> results) {
+        trailerList = new ArrayList<>(results);
         if (!results.isEmpty()) {
             for (Trailer trailer : results) {
                 View item = getLayoutInflater().inflate(R.layout.item_trailer, trailers, false);
@@ -124,6 +168,7 @@ public class DetailsActivity extends Activity implements AsyncResponse {
 
     @Override
     public void processReviewResults(List<Review> results) {
+        reviewList = new ArrayList<>(results);
         if (!results.isEmpty()) {
             for (Review review : results) {
                 View item = getLayoutInflater().inflate(R.layout.item_review, reviews, false);

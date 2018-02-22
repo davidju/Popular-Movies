@@ -27,16 +27,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements MainAsyncResponse {
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     MoviesAdapter moviesAdapter;
+    SortType sortType;
 
     @Override @SuppressWarnings("ConstantConditions")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         // Set action bar color to black
         ActionBar actionBar = getSupportActionBar();
@@ -57,6 +60,15 @@ public class MainActivity extends AppCompatActivity implements MainAsyncResponse
         FetchMoviesTask moviesTask = new FetchMoviesTask(MainActivity.this);
         moviesTask.response = this;
         moviesTask.execute(SortType.POPULAR);
+        sortType = SortType.POPULAR;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (sortType == SortType.FAVORITES) {
+            showFavorites();
+        }
     }
 
     @Override
@@ -73,14 +85,17 @@ public class MainActivity extends AppCompatActivity implements MainAsyncResponse
             FetchMoviesTask popularMoviesTask = new FetchMoviesTask(MainActivity.this);
             popularMoviesTask.response = this;
             popularMoviesTask.execute(SortType.POPULAR);
+            sortType = SortType.POPULAR;
             return true;
         } else if (id == R.id.sort_rating) {
             FetchMoviesTask topRatedMoviesTask = new FetchMoviesTask(MainActivity.this);
             topRatedMoviesTask.response = this;
             topRatedMoviesTask.execute(SortType.TOP_RATED);
+            sortType = SortType.TOP_RATED;
             return true;
         } else if (id == R.id.favorites) {
             showFavorites();
+            sortType = SortType.FAVORITES;
         }
 
         return super.onOptionsItemSelected(item);

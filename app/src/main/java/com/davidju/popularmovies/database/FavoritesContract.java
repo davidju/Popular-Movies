@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+/** Defines the types of data to be stored in local data repository */
 public class FavoritesContract {
 
     public static final String CONTENT_AUTHORITY = "com.davidju.popularmovies.app";

@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.davidju.popularmovies.BuildConfig;
 import com.davidju.popularmovies.R;
 import com.davidju.popularmovies.enums.SortType;
-import com.davidju.popularmovies.fragments.MainActivityFragment;
+import com.davidju.popularmovies.interfaces.MainAsyncResponse;
 import com.davidju.popularmovies.models.Movie;
 
 import org.json.JSONArray;
@@ -30,11 +30,17 @@ import java.util.List;
 /** AsyncTask that fetches movies from TMDB based on specified search criteria */
 public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
     private final WeakReference<Context> contextReference;
+    public MainAsyncResponse response = null;
 
     public FetchMoviesTask(Context context) {
         contextReference = new WeakReference<>(context);
+    }
+
+    @Override
+    protected void onPreExecute() {
         if (!isNetworkAvailable()) {
             cancel(true);
+            Context context = contextReference.get();
             Toast.makeText(context, context.getString(R.string.toast_no_network), Toast.LENGTH_LONG).show();
         }
     }
@@ -124,10 +130,7 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
             e.printStackTrace();
         }
 
-        MainActivityFragment.moviesAdapter.updateMovieList(movies);
-        MainActivityFragment.moviesAdapter.notifyDataSetChanged();
-
-        MainActivityFragment.recyclerView.smoothScrollToPosition(0);
+        response.processMovieResults(movies);
     }
 
     /* Check if device currently has network has network access */

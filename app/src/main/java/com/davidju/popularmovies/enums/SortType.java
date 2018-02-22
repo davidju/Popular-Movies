@@ -1,5 +1,5 @@
 package com.davidju.popularmovies.enums;
 
 public enum SortType {
-    POPULAR, TOP_RATED
+    POPULAR, TOP_RATED, FAVORITES
 }

@@ -6,12 +6,23 @@
     <string name="menu_sort_rating">Sort by Highest Rating</string>
     <string name="menu_favorites">Favorites</string>
 
+    <string name="details_favorite_unselected_title">Add to Favorites</string>
+    <string name="details_favorite_selected_title">Added to Favorites</string>
     <string name="details_synopsis_title">Synopsis</string>
     <string name="details_rating_title">Vote Average</string>
     <string name="detail_release_date_title">Release Date</string>
     <string name="detail_trailers_title">Trailers</string>
-    <string name="detail_trailers_play">Play</string>
     <string name="detail_reviews_title">Reviews</string>
+    <string name="detail_reviews_author">Written By %1$s</string>
+
+    <string name="error_no_movies">No Movies To Show</string>
+    <string name="error_no_favorites">No Favorites To Show</string>
+    <string name="error_no_reviews">No Reviews</string>
+    <string name="error_no_trailers">No Trailers</string>
+    <string name="error_no_network_reviews">No network connection. Please connect to a network
+        to load this content.</string>
+    <string name="error_no_network_trailers">No network connection. Please connect to a network
+        to load trailers.</string>
 
     <string name="toast_no_network">The movie list could not be updated because you are not connected
         to a network. Please connect to a network and try again.</string>

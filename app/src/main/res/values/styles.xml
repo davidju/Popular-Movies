@@ -12,12 +12,13 @@
         <item name="android:textSize">@dimen/details_title_text_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/bottom_border_white_background_black</item>
+        <item name="android:paddingBottom">2dp</item>
         <item name="android:layout_marginBottom">@dimen/details_content_vertical_margin</item>
     </style>
 
     <style name="details_content_theme">
         <item name="android:textSize">@dimen/details_content_text_size</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_marginBottom">@dimen/details_title_vertical_margin</item>
     </style>

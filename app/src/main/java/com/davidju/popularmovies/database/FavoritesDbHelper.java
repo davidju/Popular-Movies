@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.davidju.popularmovies.database.FavoritesContract.*;
 
+/** Helper class that creates and manages local data repository */
 public class FavoritesDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "favorites.db";

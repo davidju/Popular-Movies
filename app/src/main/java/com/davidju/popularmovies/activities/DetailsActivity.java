@@ -1,7 +1,6 @@
 package com.davidju.popularmovies.activities;
 
 import android.app.Activity;
-import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,26 +8,24 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.davidju.popularmovies.asynctasks.FetchReviewsTask;
-import com.davidju.popularmovies.asynctasks.FetchTrailersTask;
 import com.davidju.popularmovies.GlideApp;
 import com.davidju.popularmovies.R;
 import com.davidju.popularmovies.adapters.MoviesAdapter;
-import com.davidju.popularmovies.database.FavoritesContract;
-import com.davidju.popularmovies.database.FavoritesProvider;
+import com.davidju.popularmovies.asynctasks.FetchReviewsTask;
+import com.davidju.popularmovies.asynctasks.FetchTrailersTask;
+import com.davidju.popularmovies.database.FavoritesContract.FavoritesEntry;
 import com.davidju.popularmovies.interfaces.AsyncResponse;
 import com.davidju.popularmovies.models.Movie;
 import com.davidju.popularmovies.models.Review;
 import com.davidju.popularmovies.models.Trailer;
-import com.davidju.popularmovies.database.FavoritesContract.*;
 
 import java.util.List;
 
@@ -40,6 +37,7 @@ public class DetailsActivity extends Activity implements AsyncResponse {
 
     @BindView(R.id.title) TextView title;
     @BindView(R.id.poster) ImageView poster;
+    @BindView(R.id.favorite_title) TextView favoriteTitle;
     @BindView(R.id.icon_favorite) ImageView favoritesButton;
     @BindView(R.id.synopsis_content) TextView synopsis;
     @BindView(R.id.rating_content) TextView rating;
@@ -89,49 +87,87 @@ public class DetailsActivity extends Activity implements AsyncResponse {
             }
         });
 
-        FetchTrailersTask trailersTask = new FetchTrailersTask();
+        FetchTrailersTask trailersTask = new FetchTrailersTask(this);
         trailersTask.response = this;
         trailersTask.execute(movie.getId());
 
-        FetchReviewsTask reviewsTask = new FetchReviewsTask();
+        FetchReviewsTask reviewsTask = new FetchReviewsTask(this);
         reviewsTask.response = this;
         reviewsTask.execute(movie.getId());
     }
 
     @Override
     public void processTrailerResults(List<Trailer> results) {
-        for (Trailer trailer : results) {
-            ConstraintLayout item = (ConstraintLayout) getLayoutInflater().inflate(R.layout.item_trailer, trailers, false);
-            TextView name = item.findViewById(R.id.trailer_name);
-            name.setText(trailer.getName());
-            TextView play = item.findViewById(R.id.trailer_play);
-            play.setOnClickListener(view -> {
-                String link = "https://www.youtube.com/watch?v=" + trailer.getKey();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-                startActivity(intent);
-            });
+        if (!results.isEmpty()) {
+            for (Trailer trailer : results) {
+                View item = getLayoutInflater().inflate(R.layout.item_trailer, trailers, false);
+
+                TextView name = item.findViewById(R.id.trailer_name);
+                name.setText(trailer.getName());
+
+                ImageView play = item.findViewById(R.id.trailer_play);
+                play.setOnClickListener(view -> {
+                    String link = "https://www.youtube.com/watch?v=" + trailer.getKey();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    startActivity(intent);
+                });
+
+                trailers.addView(item);
+            }
+        } else {
+            TextView item = (TextView) getLayoutInflater().inflate(R.layout.item_error, trailers, false);
+            item.setText(getString(R.string.error_no_trailers));
             trailers.addView(item);
         }
     }
 
     @Override
     public void processReviewResults(List<Review> results) {
-        for (Review review : results) {
-            TextView item = new TextView(DetailsActivity.this);
-            item.setText(review.getContent());
-            item.setTextColor(ContextCompat.getColor(getApplicationContext(), android.R.color.white));
+        if (!results.isEmpty()) {
+            for (Review review : results) {
+                View item = getLayoutInflater().inflate(R.layout.item_review, reviews, false);
+
+                TextView content = item.findViewById(R.id.content);
+                content.setText(review.getContent());
+
+                TextView author = item.findViewById(R.id.author);
+                author.setText(getString(R.string.detail_reviews_author, review.getAuthor()));
+
+                reviews.addView(item);
+            }
+        } else {
+            TextView item = (TextView) getLayoutInflater().inflate(R.layout.item_error, trailers, false);
+            item.setText(getString(R.string.error_no_reviews));
             reviews.addView(item);
         }
     }
 
+    @Override
+    public void reportTrailersNetworkError() {
+        TextView item = (TextView) getLayoutInflater().inflate(R.layout.item_error, trailers, false);
+        item.setText(getString(R.string.error_no_network_trailers));
+        trailers.addView(item);
+    }
+
+    @Override
+    public void reportReviewsNetworkError() {
+        TextView item = (TextView) getLayoutInflater().inflate(R.layout.item_error, trailers, false);
+        item.setText(getString(R.string.error_no_network_reviews));
+        reviews.addView(item);
+    }
+
+    /* Toggles favorite icon and messages from selected to unselected state or vice versa */
     private void toggleFavoriteButton(boolean isFavorite) {
         if (isFavorite) {
+            favoriteTitle.setText(getString(R.string.details_favorite_selected_title));
             favoritesButton.setImageDrawable(ContextCompat.getDrawable(DetailsActivity.this, R.drawable.favorite_icon_selected));
         } else {
+            favoriteTitle.setText(getString(R.string.details_favorite_unselected_title));
             favoritesButton.setImageDrawable(ContextCompat.getDrawable(DetailsActivity.this, R.drawable.favorite_icon_unselected));
         }
     }
 
+    /* Check if current movie being shown is included in the user's favorite list */
     private boolean isFavorite(String id) {
         Cursor cursor = getContentResolver().query(FavoritesEntry.CONTENT_URI, null,
                 FavoritesEntry.COLUMN_ID + " = ?", new String[]{id}, null);
@@ -140,6 +176,7 @@ public class DetailsActivity extends Activity implements AsyncResponse {
         return isFavorite;
     }
 
+    /* Add the current movie to the user's favorite list */
     private void insertFavorite(Movie movie) {
         ContentValues values = new ContentValues();
         values.put(FavoritesEntry.COLUMN_ID, movie.getId());
@@ -151,6 +188,7 @@ public class DetailsActivity extends Activity implements AsyncResponse {
         getContentResolver().insert(FavoritesEntry.CONTENT_URI, values);
     }
 
+    /* Remove the current movie from the user's favorite list */
     private void removeFavorite(Movie movie) {
         getContentResolver().delete(FavoritesEntry.CONTENT_URI, FavoritesEntry.COLUMN_ID + " = ?", new String[]{movie.getId()});
     }

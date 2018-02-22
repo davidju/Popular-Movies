@@ -33,6 +33,13 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/details_title_vertical_margin" />
 
+        <ImageView
+            android:id="@+id/icon_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/favorite_icon_unselected"
+            android:layout_marginBottom="@dimen/details_title_vertical_margin"/>
+
         <TextView
             android:id="@+id/synopsis_title"
             style="@style/details_title_theme"

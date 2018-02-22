@@ -4,6 +4,7 @@
     <string name="menu_sort">Sort</string>
     <string name="menu_sort_popularity">Sort by Popularity</string>
     <string name="menu_sort_rating">Sort by Highest Rating</string>
+    <string name="menu_favorites">Favorites</string>
 
     <string name="details_synopsis_title">Synopsis</string>
     <string name="details_rating_title">Vote Average</string>

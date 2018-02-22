@@ -1,7 +1,10 @@
 package com.davidju.popularmovies.activities;
 
 import android.app.Activity;
+import android.content.ContentProvider;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,10 +22,13 @@ import com.davidju.popularmovies.asynctasks.FetchTrailersTask;
 import com.davidju.popularmovies.GlideApp;
 import com.davidju.popularmovies.R;
 import com.davidju.popularmovies.adapters.MoviesAdapter;
+import com.davidju.popularmovies.database.FavoritesContract;
+import com.davidju.popularmovies.database.FavoritesProvider;
 import com.davidju.popularmovies.interfaces.AsyncResponse;
 import com.davidju.popularmovies.models.Movie;
 import com.davidju.popularmovies.models.Review;
 import com.davidju.popularmovies.models.Trailer;
+import com.davidju.popularmovies.database.FavoritesContract.*;
 
 import java.util.List;
 
@@ -34,11 +40,14 @@ public class DetailsActivity extends Activity implements AsyncResponse {
 
     @BindView(R.id.title) TextView title;
     @BindView(R.id.poster) ImageView poster;
+    @BindView(R.id.icon_favorite) ImageView favoritesButton;
     @BindView(R.id.synopsis_content) TextView synopsis;
     @BindView(R.id.rating_content) TextView rating;
     @BindView(R.id.release_date_content) TextView releaseDate;
     @BindView(R.id.trailers) LinearLayout trailers;
     @BindView(R.id.reviews) LinearLayout reviews;
+
+    private boolean isFavorite;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +73,21 @@ public class DetailsActivity extends Activity implements AsyncResponse {
         synopsis.setText(movie.getSynopsis());
         rating.setText(movie.getRating());
         releaseDate.setText(movie.getReleaseDate());
+
+        isFavorite = isFavorite(movie.getId());
+        toggleFavoriteButton(isFavorite);
+
+        favoritesButton.setOnClickListener(view -> {
+            if (!isFavorite) {
+                insertFavorite(movie);
+                isFavorite = true;
+                toggleFavoriteButton(true);
+            } else {
+                removeFavorite(movie);
+                isFavorite = false;
+                toggleFavoriteButton(false);
+            }
+        });
 
         FetchTrailersTask trailersTask = new FetchTrailersTask();
         trailersTask.response = this;
@@ -98,5 +122,36 @@ public class DetailsActivity extends Activity implements AsyncResponse {
             item.setTextColor(ContextCompat.getColor(getApplicationContext(), android.R.color.white));
             reviews.addView(item);
         }
+    }
+
+    private void toggleFavoriteButton(boolean isFavorite) {
+        if (isFavorite) {
+            favoritesButton.setImageDrawable(ContextCompat.getDrawable(DetailsActivity.this, R.drawable.favorite_icon_selected));
+        } else {
+            favoritesButton.setImageDrawable(ContextCompat.getDrawable(DetailsActivity.this, R.drawable.favorite_icon_unselected));
+        }
+    }
+
+    private boolean isFavorite(String id) {
+        Cursor cursor = getContentResolver().query(FavoritesEntry.CONTENT_URI, null,
+                FavoritesEntry.COLUMN_ID + " = ?", new String[]{id}, null);
+        boolean isFavorite = cursor != null && cursor.moveToFirst();
+        cursor.close();
+        return isFavorite;
+    }
+
+    private void insertFavorite(Movie movie) {
+        ContentValues values = new ContentValues();
+        values.put(FavoritesEntry.COLUMN_ID, movie.getId());
+        values.put(FavoritesEntry.COLUMN_TITLE, movie.getTitle());
+        values.put(FavoritesEntry.COLUMN_POSTER, movie.getPosterPath());
+        values.put(FavoritesEntry.COLUMN_SYNOPSIS, movie.getSynopsis());
+        values.put(FavoritesEntry.COLUMN_RATING, movie.getRating());
+        values.put(FavoritesEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
+        getContentResolver().insert(FavoritesEntry.CONTENT_URI, values);
+    }
+
+    private void removeFavorite(Movie movie) {
+        getContentResolver().delete(FavoritesEntry.CONTENT_URI, FavoritesEntry.COLUMN_ID + " = ?", new String[]{movie.getId()});
     }
 }

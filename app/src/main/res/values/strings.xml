@@ -6,6 +6,8 @@
     <string name="menu_sort_rating">Sort by Highest Rating</string>
     <string name="menu_favorites">Favorites</string>
 
+    <string name="details_favorite_unselected_title">Add to Favorites</string>
+    <string name="details_favorite_selected_title">Added to Favorites</string>
     <string name="details_synopsis_title">Synopsis</string>
     <string name="details_rating_title">Vote Average</string>
     <string name="detail_release_date_title">Release Date</string>

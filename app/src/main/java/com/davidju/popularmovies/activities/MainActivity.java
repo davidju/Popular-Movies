@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity implements MainAsyncResponse
     @Override
     public void onResume() {
         super.onResume();
+
+        // Handles case in which a move is removed from favorites, refreshes movie list so the
+        // unselected movie no longer appears in the view
         if (sortType == SortType.FAVORITES) {
             showFavorites();
         }

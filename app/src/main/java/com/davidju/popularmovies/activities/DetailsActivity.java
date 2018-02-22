@@ -37,6 +37,7 @@ public class DetailsActivity extends Activity implements AsyncResponse {
 
     @BindView(R.id.title) TextView title;
     @BindView(R.id.poster) ImageView poster;
+    @BindView(R.id.favorite_title) TextView favoriteTitle;
     @BindView(R.id.icon_favorite) ImageView favoritesButton;
     @BindView(R.id.synopsis_content) TextView synopsis;
     @BindView(R.id.rating_content) TextView rating;
@@ -123,8 +124,10 @@ public class DetailsActivity extends Activity implements AsyncResponse {
 
     private void toggleFavoriteButton(boolean isFavorite) {
         if (isFavorite) {
+            favoriteTitle.setText(getString(R.string.details_favorite_selected_title));
             favoritesButton.setImageDrawable(ContextCompat.getDrawable(DetailsActivity.this, R.drawable.favorite_icon_selected));
         } else {
+            favoriteTitle.setText(getString(R.string.details_favorite_unselected_title));
             favoritesButton.setImageDrawable(ContextCompat.getDrawable(DetailsActivity.this, R.drawable.favorite_icon_unselected));
         }
     }

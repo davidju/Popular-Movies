@@ -33,12 +33,32 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/details_title_vertical_margin" />
 
-        <ImageView
-            android:id="@+id/icon_favorite"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/favorite_icon_unselected"
-            android:layout_marginBottom="@dimen/details_title_vertical_margin"/>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/details_title_vertical_margin">
+
+            <TextView
+                android:id="@+id/favorite_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/details_favorite_unselected_title"
+                android:textSize="@dimen/details_title_text_size"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="10dp"/>
+
+            <ImageView
+                android:id="@+id/icon_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/favorite_icon_unselected"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/synopsis_title"

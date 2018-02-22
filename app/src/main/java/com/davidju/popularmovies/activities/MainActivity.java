@@ -1,5 +1,6 @@
 package com.davidju.popularmovies.activities;
 
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +14,14 @@ import android.view.WindowManager;
 
 import com.davidju.popularmovies.asynctasks.FetchMoviesTask;
 import com.davidju.popularmovies.R;
+import com.davidju.popularmovies.database.FavoritesContract;
 import com.davidju.popularmovies.enums.SortType;
+import com.davidju.popularmovies.fragments.MainActivityFragment;
+import com.davidju.popularmovies.models.Movie;
+import com.davidju.popularmovies.database.FavoritesContract.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,8 +59,38 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.sort_rating) {
             new FetchMoviesTask(MainActivity.this).execute(SortType.TOP_RATED);
             return true;
+        } else if (id == R.id.favorites) {
+            showFavorites();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showFavorites() {
+        List<Movie> movies = new ArrayList<>();
+
+        Cursor cursor = getContentResolver().query(FavoritesContract.FavoritesEntry.CONTENT_URI,
+                null, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    Movie movie = new Movie();
+                    movie.setId(cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_ID)));
+                    movie.setTitle(cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_TITLE)));
+                    movie.setPosterPath(cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_POSTER)));
+                    movie.setSynopsis(cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_SYNOPSIS)));
+                    movie.setRating(cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_RATING)));
+                    movie.setRating(cursor.getString(cursor.getColumnIndex(FavoritesEntry.COLUMN_RELEASE_DATE)));
+                    movies.add(movie);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+
+        }
+
+        MainActivityFragment.moviesAdapter.updateMovieList(movies);
+        MainActivityFragment.moviesAdapter.notifyDataSetChanged();
+
+        MainActivityFragment.recyclerView.smoothScrollToPosition(0);
     }
 }

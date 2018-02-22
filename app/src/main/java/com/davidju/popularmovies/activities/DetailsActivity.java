@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -115,9 +116,11 @@ public class DetailsActivity extends Activity implements AsyncResponse {
     @Override
     public void processReviewResults(List<Review> results) {
         for (Review review : results) {
-            TextView item = new TextView(DetailsActivity.this);
-            item.setText(review.getContent());
-            item.setTextColor(ContextCompat.getColor(getApplicationContext(), android.R.color.white));
+            View item = getLayoutInflater().inflate(R.layout.item_review, reviews, false);
+            TextView content = item.findViewById(R.id.content);
+            TextView author = item.findViewById(R.id.author);
+            content.setText(review.getContent());
+            author.setText(getString(R.string.detail_reviews_author, review.getAuthor()));
             reviews.addView(item);
         }
     }

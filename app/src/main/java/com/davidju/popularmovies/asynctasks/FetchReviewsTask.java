@@ -1,5 +1,8 @@
 package com.davidju.popularmovies.asynctasks;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
 import com.davidju.popularmovies.BuildConfig;
@@ -15,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,7 +26,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FetchReviewsTask extends AsyncTask<String, Void, String> {
+    private final WeakReference<Context> contextReference;
     public AsyncResponse response = null;
+
+    public FetchReviewsTask(Context context) {
+        contextReference = new WeakReference<>(context);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        if (!isNetworkAvailable()) {
+            cancel(true);
+            response.reportReviewsNetworkError();
+        }
+    }
 
     @Override
     protected String doInBackground(String... params) {
@@ -88,5 +105,16 @@ public class FetchReviewsTask extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         }
         response.processReviewResults(reviews);
+    }
+
+    /* Check if device currently has network has network access */
+    private boolean isNetworkAvailable() {
+        Context context = contextReference.get();
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            return networkInfo != null && networkInfo.isConnectedOrConnecting();
+        }
+        return false;
     }
 }

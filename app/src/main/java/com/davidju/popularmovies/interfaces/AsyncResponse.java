@@ -8,4 +8,6 @@ import java.util.List;
 public interface AsyncResponse {
     void processTrailerResults(List<Trailer> results);
     void processReviewResults(List<Review> results);
+    void reportTrailersNetworkError();
+    void reportReviewsNetworkError();
 }

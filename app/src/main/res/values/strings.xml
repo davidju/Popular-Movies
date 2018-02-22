@@ -18,7 +18,7 @@
     <string name="error_no_reviews">No Reviews</string>
     <string name="error_no_trailers">No Trailers</string>
     <string name="error_no_network_reviews">No network connection. Please connect to a network
-        to load reviews.</string>
+        to load this content.</string>
     <string name="error_no_network_trailers">No network connection. Please connect to a network
         to load trailers.</string>
 

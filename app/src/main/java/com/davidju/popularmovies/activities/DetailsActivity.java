@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
@@ -88,11 +87,11 @@ public class DetailsActivity extends Activity implements AsyncResponse {
             }
         });
 
-        FetchTrailersTask trailersTask = new FetchTrailersTask();
+        FetchTrailersTask trailersTask = new FetchTrailersTask(this);
         trailersTask.response = this;
         trailersTask.execute(movie.getId());
 
-        FetchReviewsTask reviewsTask = new FetchReviewsTask();
+        FetchReviewsTask reviewsTask = new FetchReviewsTask(this);
         reviewsTask.response = this;
         reviewsTask.execute(movie.getId());
     }
@@ -135,6 +134,20 @@ public class DetailsActivity extends Activity implements AsyncResponse {
             item.setText(getString(R.string.error_no_reviews));
             reviews.addView(item);
         }
+    }
+
+    @Override
+    public void reportTrailersNetworkError() {
+        TextView item = (TextView) getLayoutInflater().inflate(R.layout.item_error, trailers, false);
+        item.setText(getString(R.string.error_no_network_trailers));
+        trailers.addView(item);
+    }
+
+    @Override
+    public void reportReviewsNetworkError() {
+        TextView item = (TextView) getLayoutInflater().inflate(R.layout.item_error, trailers, false);
+        item.setText(getString(R.string.error_no_network_reviews));
+        reviews.addView(item);
     }
 
     private void toggleFavoriteButton(boolean isFavorite) {

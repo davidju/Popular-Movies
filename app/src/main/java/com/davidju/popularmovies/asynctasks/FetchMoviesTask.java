@@ -34,8 +34,13 @@ public class FetchMoviesTask extends AsyncTask<SortType, Void, String> {
 
     public FetchMoviesTask(Context context) {
         contextReference = new WeakReference<>(context);
+    }
+
+    @Override
+    protected void onPreExecute() {
         if (!isNetworkAvailable()) {
             cancel(true);
+            Context context = contextReference.get();
             Toast.makeText(context, context.getString(R.string.toast_no_network), Toast.LENGTH_LONG).show();
         }
     }

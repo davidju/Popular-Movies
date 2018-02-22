@@ -4,5 +4,5 @@
     android:layout_height="match_parent"
     android:textSize="@dimen/details_error_text_size"
     android:textColor="@android:color/white"
-    android:layout_marginTop="@dimen/details_trailer_item_vertical_margin"
-    android:layout_marginBottom="@dimen/details_trailer_item_vertical_margin"/>
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="8dp"/>

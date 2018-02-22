@@ -7,23 +7,31 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.davidju.popularmovies.adapters.MoviesAdapter;
 import com.davidju.popularmovies.asynctasks.FetchMoviesTask;
 import com.davidju.popularmovies.R;
 import com.davidju.popularmovies.database.FavoritesContract;
 import com.davidju.popularmovies.enums.SortType;
-import com.davidju.popularmovies.fragments.MainActivityFragment;
+import com.davidju.popularmovies.interfaces.MainAsyncResponse;
 import com.davidju.popularmovies.models.Movie;
 import com.davidju.popularmovies.database.FavoritesContract.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import butterknife.BindView;
+
+public class MainActivity extends AppCompatActivity implements MainAsyncResponse {
+
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    MoviesAdapter moviesAdapter;
 
     @Override @SuppressWarnings("ConstantConditions")
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(ContextCompat.getColor(this, android.R.color.black));
         }
+
+        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 3));
+        moviesAdapter = new MoviesAdapter();
+        recyclerView.setAdapter(moviesAdapter);
+
+        FetchMoviesTask moviesTask = new FetchMoviesTask(MainActivity.this);
+        moviesTask.response = this;
+        moviesTask.execute(SortType.POPULAR);
     }
 
     @Override
@@ -54,16 +70,28 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.sort_popular) {
-            new FetchMoviesTask(MainActivity.this).execute(SortType.POPULAR);
+            FetchMoviesTask popularMoviesTask = new FetchMoviesTask(MainActivity.this);
+            popularMoviesTask.response = this;
+            popularMoviesTask.execute(SortType.POPULAR);
             return true;
         } else if (id == R.id.sort_rating) {
-            new FetchMoviesTask(MainActivity.this).execute(SortType.TOP_RATED);
+            FetchMoviesTask topRatedMoviesTask = new FetchMoviesTask(MainActivity.this);
+            topRatedMoviesTask.response = this;
+            topRatedMoviesTask.execute(SortType.TOP_RATED);
             return true;
         } else if (id == R.id.favorites) {
             showFavorites();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void processMovieResults(List<Movie> results) {
+        moviesAdapter.updateMovieList(results);
+        moviesAdapter.notifyDataSetChanged();
+
+        recyclerView.smoothScrollToPosition(0);
     }
 
     private void showFavorites() {
@@ -88,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        MainActivityFragment.moviesAdapter.updateMovieList(movies);
-        MainActivityFragment.moviesAdapter.notifyDataSetChanged();
+        moviesAdapter.updateMovieList(movies);
+        moviesAdapter.notifyDataSetChanged();
 
-        MainActivityFragment.recyclerView.smoothScrollToPosition(0);
+        recyclerView.smoothScrollToPosition(0);
     }
 }

@@ -1,7 +1,6 @@
 package com.davidju.popularmovies.activities;
 
 import android.app.Activity;
-import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,18 +16,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.davidju.popularmovies.asynctasks.FetchReviewsTask;
-import com.davidju.popularmovies.asynctasks.FetchTrailersTask;
 import com.davidju.popularmovies.GlideApp;
 import com.davidju.popularmovies.R;
 import com.davidju.popularmovies.adapters.MoviesAdapter;
-import com.davidju.popularmovies.database.FavoritesContract;
-import com.davidju.popularmovies.database.FavoritesProvider;
+import com.davidju.popularmovies.asynctasks.FetchReviewsTask;
+import com.davidju.popularmovies.asynctasks.FetchTrailersTask;
+import com.davidju.popularmovies.database.FavoritesContract.FavoritesEntry;
 import com.davidju.popularmovies.interfaces.AsyncResponse;
 import com.davidju.popularmovies.models.Movie;
 import com.davidju.popularmovies.models.Review;
 import com.davidju.popularmovies.models.Trailer;
-import com.davidju.popularmovies.database.FavoritesContract.*;
 
 import java.util.List;
 

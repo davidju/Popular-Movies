@@ -101,14 +101,17 @@ public class DetailsActivity extends Activity implements AsyncResponse {
         if (!results.isEmpty()) {
             for (Trailer trailer : results) {
                 View item = getLayoutInflater().inflate(R.layout.item_trailer, trailers, false);
+
                 TextView name = item.findViewById(R.id.trailer_name);
                 name.setText(trailer.getName());
+
                 ImageView play = item.findViewById(R.id.trailer_play);
                 play.setOnClickListener(view -> {
                     String link = "https://www.youtube.com/watch?v=" + trailer.getKey();
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
                     startActivity(intent);
                 });
+
                 trailers.addView(item);
             }
         } else {
@@ -123,10 +126,13 @@ public class DetailsActivity extends Activity implements AsyncResponse {
         if (!results.isEmpty()) {
             for (Review review : results) {
                 View item = getLayoutInflater().inflate(R.layout.item_review, reviews, false);
+
                 TextView content = item.findViewById(R.id.content);
-                TextView author = item.findViewById(R.id.author);
                 content.setText(review.getContent());
+
+                TextView author = item.findViewById(R.id.author);
                 author.setText(getString(R.string.detail_reviews_author, review.getAuthor()));
+
                 reviews.addView(item);
             }
         } else {
@@ -150,6 +156,7 @@ public class DetailsActivity extends Activity implements AsyncResponse {
         reviews.addView(item);
     }
 
+    /* Toggles favorite icon and messages from selected to unselected state or vice versa */
     private void toggleFavoriteButton(boolean isFavorite) {
         if (isFavorite) {
             favoriteTitle.setText(getString(R.string.details_favorite_selected_title));
@@ -160,6 +167,7 @@ public class DetailsActivity extends Activity implements AsyncResponse {
         }
     }
 
+    /* Check if current movie being shown is included in the user's favorite list */
     private boolean isFavorite(String id) {
         Cursor cursor = getContentResolver().query(FavoritesEntry.CONTENT_URI, null,
                 FavoritesEntry.COLUMN_ID + " = ?", new String[]{id}, null);
@@ -168,6 +176,7 @@ public class DetailsActivity extends Activity implements AsyncResponse {
         return isFavorite;
     }
 
+    /* Add the current movie to the user's favorite list */
     private void insertFavorite(Movie movie) {
         ContentValues values = new ContentValues();
         values.put(FavoritesEntry.COLUMN_ID, movie.getId());
@@ -179,6 +188,7 @@ public class DetailsActivity extends Activity implements AsyncResponse {
         getContentResolver().insert(FavoritesEntry.CONTENT_URI, values);
     }
 
+    /* Remove the current movie from the user's favorite list */
     private void removeFavorite(Movie movie) {
         getContentResolver().delete(FavoritesEntry.CONTENT_URI, FavoritesEntry.COLUMN_ID + " = ?", new String[]{movie.getId()});
     }

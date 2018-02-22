@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+/** Content provider that manages CRUD operations to its underlying data repository */
 public class FavoritesProvider extends ContentProvider {
 
     private static final UriMatcher uriMatcher = buildUriMatcher();

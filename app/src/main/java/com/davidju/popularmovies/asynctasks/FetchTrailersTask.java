@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/** AsyncTask that fetches trailers for the specified movie from TMDB */
 public class FetchTrailersTask extends AsyncTask<String, Void, String> {
     private final WeakReference<Context> contextReference;
     public AsyncResponse response = null;
@@ -40,30 +41,32 @@ public class FetchTrailersTask extends AsyncTask<String, Void, String> {
         }
     }
 
-    @Override
+    @Override @SuppressWarnings("ConstantConditions")
     protected String doInBackground(String... params) {
-        URL url = buildUrl(params[0]);
-        try {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
+        if (!isCancelled()) {
+            try {
+                URL url = buildUrl(params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.connect();
 
-            InputStream inputStream = connection.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                InputStream inputStream = connection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-            StringBuilder buffer = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-                buffer.append("\n");
+                StringBuilder buffer = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                    buffer.append("\n");
+                }
+
+                inputStream.close();
+                reader.close();
+
+                return buffer.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            inputStream.close();
-            reader.close();
-
-            return buffer.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -73,6 +76,7 @@ public class FetchTrailersTask extends AsyncTask<String, Void, String> {
         processJson(json);
     }
 
+    /* Create URL for HTTP request */
     private URL buildUrl(String movieId) {
         String url = "https://api.themoviedb.org/3/movie/";
         url += movieId + "/videos?api_key=" + BuildConfig.TMDB_API_KEY;
@@ -85,6 +89,7 @@ public class FetchTrailersTask extends AsyncTask<String, Void, String> {
         return null;
     }
 
+    /* Parse JSON results */
     private void processJson(String json) {
         final String KEY_RESULTS = "results";
         final String KEY_NAME = "name";

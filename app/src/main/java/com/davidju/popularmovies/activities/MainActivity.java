@@ -11,8 +11,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.davidju.popularmovies.adapters.MoviesAdapter;
 import com.davidju.popularmovies.asynctasks.FetchMoviesTask;
@@ -32,6 +34,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements MainAsyncResponse {
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.error_view) TextView errorMessage;
     MoviesAdapter moviesAdapter;
     SortType sortType;
 
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainAsyncResponse
         moviesAdapter = new MoviesAdapter();
         recyclerView.setAdapter(moviesAdapter);
 
+        // Default to show popular movies upon entering app
         FetchMoviesTask moviesTask = new FetchMoviesTask(MainActivity.this);
         moviesTask.response = this;
         moviesTask.execute(SortType.POPULAR);
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements MainAsyncResponse
     public void onResume() {
         super.onResume();
 
-        // Handles case in which a move is removed from favorites, refreshes movie list so the
+        // Handles case in which a move is removed from favorites; refreshes movie list so the
         // unselected movie no longer appears in the view
         if (sortType == SortType.FAVORITES) {
             showFavorites();
@@ -106,12 +110,29 @@ public class MainActivity extends AppCompatActivity implements MainAsyncResponse
 
     @Override
     public void processMovieResults(List<Movie> results) {
-        moviesAdapter.updateMovieList(results);
-        moviesAdapter.notifyDataSetChanged();
+        if (results.isEmpty()) {
+            if (errorMessage.getVisibility() == View.INVISIBLE) {
+                errorMessage.setText(getString(R.string.error_no_movies));
+                errorMessage.setVisibility(View.VISIBLE);
+            }
+            if (recyclerView.getVisibility() == View.VISIBLE) {
+                recyclerView.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            moviesAdapter.updateMovieList(results);
+            moviesAdapter.notifyDataSetChanged();
 
-        recyclerView.smoothScrollToPosition(0);
+            if (errorMessage.getVisibility() == View.VISIBLE) {
+                errorMessage.setVisibility(View.INVISIBLE);
+            }
+            if (recyclerView.getVisibility() == View.INVISIBLE) {
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+            recyclerView.smoothScrollToPosition(0);
+        }
     }
 
+    /* Query and load user's favorite movies from local storage via Content Provider */
     private void showFavorites() {
         List<Movie> movies = new ArrayList<>();
 
@@ -131,12 +152,27 @@ public class MainActivity extends AppCompatActivity implements MainAsyncResponse
                 } while (cursor.moveToNext());
             }
             cursor.close();
-
         }
 
-        moviesAdapter.updateMovieList(movies);
-        moviesAdapter.notifyDataSetChanged();
+        if (movies.isEmpty()) {
+            if (errorMessage.getVisibility() == View.INVISIBLE) {
+                errorMessage.setText(getString(R.string.error_no_favorites));
+                errorMessage.setVisibility(View.VISIBLE);
+            }
+            if (recyclerView.getVisibility() == View.VISIBLE) {
+                recyclerView.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            moviesAdapter.updateMovieList(movies);
+            moviesAdapter.notifyDataSetChanged();
 
-        recyclerView.smoothScrollToPosition(0);
+            if (errorMessage.getVisibility() == View.VISIBLE) {
+                errorMessage.setVisibility(View.INVISIBLE);
+            }
+            if (recyclerView.getVisibility() == View.INVISIBLE) {
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+            recyclerView.smoothScrollToPosition(0);
+        }
     }
 }

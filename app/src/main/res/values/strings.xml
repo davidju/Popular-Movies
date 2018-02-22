@@ -12,7 +12,6 @@
     <string name="details_rating_title">Vote Average</string>
     <string name="detail_release_date_title">Release Date</string>
     <string name="detail_trailers_title">Trailers</string>
-    <string name="detail_trailers_play">Play</string>
     <string name="detail_reviews_title">Reviews</string>
     <string name="detail_reviews_author">Written By %1$s</string>
 

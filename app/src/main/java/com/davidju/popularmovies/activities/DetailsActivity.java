@@ -103,7 +103,7 @@ public class DetailsActivity extends Activity implements AsyncResponse {
             ConstraintLayout item = (ConstraintLayout) getLayoutInflater().inflate(R.layout.item_trailer, trailers, false);
             TextView name = item.findViewById(R.id.trailer_name);
             name.setText(trailer.getName());
-            TextView play = item.findViewById(R.id.trailer_play);
+            ImageView play = item.findViewById(R.id.trailer_play);
             play.setOnClickListener(view -> {
                 String link = "https://www.youtube.com/watch?v=" + trailer.getKey();
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));

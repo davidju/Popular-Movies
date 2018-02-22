@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/details_trailer_item_vertical_margin"
     android:layout_marginBottom="@dimen/details_trailer_item_vertical_margin">
 
     <TextView
@@ -19,14 +20,11 @@
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintHorizontal_weight="7" />
 
-    <TextView
+    <ImageView
         android:id="@+id/trailer_play"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/details_trailer_text_size"
-        android:textColor="@android:color/white"
-        android:gravity="center"
-        android:text="@string/detail_trailers_play"
+        android:src="@drawable/play_icon"
         app:layout_constraintLeft_toRightOf="@+id/trailer_name"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"

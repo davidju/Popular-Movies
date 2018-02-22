@@ -26,4 +26,6 @@
 
     <string name="toast_no_network">The movie list could not be updated because you are not connected
         to a network. Please connect to a network and try again.</string>
+    <string name="toast_favorites_added">Added to favorites</string>
+    <string name="toast_favorites_removed">Removed from favorites</string>
 </resources>

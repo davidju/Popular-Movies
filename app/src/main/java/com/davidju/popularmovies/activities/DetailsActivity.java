@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.davidju.popularmovies.GlideApp;
 import com.davidju.popularmovies.R;
@@ -186,10 +187,12 @@ public class DetailsActivity extends Activity implements AsyncResponse {
         values.put(FavoritesEntry.COLUMN_RATING, movie.getRating());
         values.put(FavoritesEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
         getContentResolver().insert(FavoritesEntry.CONTENT_URI, values);
+        Toast.makeText(this, getString(R.string.toast_favorites_added), Toast.LENGTH_SHORT).show();
     }
 
     /* Remove the current movie from the user's favorite list */
     private void removeFavorite(Movie movie) {
         getContentResolver().delete(FavoritesEntry.CONTENT_URI, FavoritesEntry.COLUMN_ID + " = ?", new String[]{movie.getId()});
+        Toast.makeText(this, getString(R.string.toast_favorites_removed), Toast.LENGTH_SHORT).show();
     }
 }

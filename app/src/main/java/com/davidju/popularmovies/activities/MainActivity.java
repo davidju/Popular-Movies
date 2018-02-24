@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements MainAsyncResponse
         }
     }
 
+    /** Restore previous LayoutManager state if it exists */
     private void restoreLayoutState() {
         // Set listener to detect when the adapter has updated the RecyclerView with new data
         recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -206,8 +207,9 @@ public class MainActivity extends AppCompatActivity implements MainAsyncResponse
             public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
                 recyclerView.removeOnLayoutChangeListener(this);
 
-                // Best solution to restore scroll state in a RecyclerView I could find so far. Traditional ways
-                // of doing so do not work - I suspect it has something to do with the fact that the movie
+                // Best solution to restore scroll state in a RecyclerView I could find so far. Using a
+                // Runnable is required to make this work. Traditional ways of doing so do not work -
+                // I suspect it has something to do with the fact that the movie
                 // poster images are being loaded asynchronously, but not sure what I can do resolve it.
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -217,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements MainAsyncResponse
                             layoutState = null;
                         }
                     }
-                }, 250);
+                }, 20);
             }
         });
     }

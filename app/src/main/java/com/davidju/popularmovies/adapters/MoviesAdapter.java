@@ -13,6 +13,7 @@ import com.davidju.popularmovies.GlideApp;
 import com.davidju.popularmovies.R;
 import com.davidju.popularmovies.activities.DetailsActivity;
 import com.davidju.popularmovies.models.Movie;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +48,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public void onBindViewHolder(MovieViewHolder viewHolder, int position) {
         final Movie movie = movies.get(position);
         final Context context = viewHolder.poster.getContext();
-        GlideApp.with(context)
-                .load(Uri.parse(baseUrl + movie.getPosterPath()))
-                .fitCenter()
+        Picasso.with(context)
+                .load(baseUrl + movie.getPosterPath())
                 .into(viewHolder.poster);
         viewHolder.poster.setOnClickListener(view -> {
             Intent intent = new Intent(context, DetailsActivity.class);

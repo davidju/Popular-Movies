@@ -31,10 +31,17 @@ public class FavoritesDbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        // For now, just drop and recreate the table
-        final String SQL_DELETE_FAVORITES_TABLE = "DROP TABLE IF EXISTS " + FavoritesEntry.TABLE_NAME;
-        sqLiteDatabase.execSQL(SQL_DELETE_FAVORITES_TABLE);
-        onCreate(sqLiteDatabase);
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        /* Currently only one version of database available, no migration necessary
+         *
+         * If migration is needed, update using the following method:
+         * if (oldVersion < 2)
+         *      database.execSQL(insert alter SQL statement here)
+         * if (oldVersion < 3)
+         *      database.execSQL(insert alter SQL statement here)
+         *
+         * Note: when adding columns as part of an upgrade, also update the onCreate SQL statement
+         * for new users
+         */
     }
 }
